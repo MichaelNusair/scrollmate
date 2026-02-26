@@ -1,0 +1,21 @@
+{
+  "name": "@scrollmate/infra",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'no linter configured'",
+    "cdk": "cdk",
+    "deploy": "cdk deploy --all --require-approval never",
+    "synth": "cdk synth"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.175.0",
+    "constructs": "^10.4.0"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.175.0",
+    "typescript": "^5.7.0"
+  }
+}

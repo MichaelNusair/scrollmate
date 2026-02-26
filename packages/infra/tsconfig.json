@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+    "declaration": true,
+    "lib": ["ES2022"],
+    "paths": {}
+  },
+  "include": ["bin", "lib"],
+  "exclude": ["dist", "node_modules", "cdk.out"]
+}

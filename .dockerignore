@@ -1,9 +1,0 @@
-node_modules
-.next
-.git
-.gitignore
-.env*.local
-prisma/dev.db
-prisma/dev.db-journal
-README.md
-.DS_Store
