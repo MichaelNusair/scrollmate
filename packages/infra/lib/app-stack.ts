@@ -133,6 +133,7 @@ export class AppStack extends cdk.Stack {
 
     listener.addTargets("WebTarget", {
       port: 3000,
+      protocol: elbv2.ApplicationProtocol.HTTP,
       targets: [this.service],
       healthCheck: {
         path: "/api/auth/providers",
