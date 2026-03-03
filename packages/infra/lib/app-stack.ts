@@ -5,14 +5,13 @@ import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as elbv2 from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
-import * as rds from "aws-cdk-lib/aws-rds";
 import * as logs from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
 
 interface AppStackProps extends cdk.StackProps {
   vpc: ec2.Vpc;
-  dbCluster: rds.DatabaseCluster;
-  dbSecurityGroup: ec2.SecurityGroup;
+  dbSecretArn: string;
+  dbSecurityGroupId: string;
   appSecretsArn: string;
 }
 
@@ -55,7 +54,11 @@ export class AppStack extends cdk.Stack {
     );
     appSecrets.grantRead(taskRole);
 
-    const dbSecret = props.dbCluster.secret!;
+    const dbSecret = secretsmanager.Secret.fromSecretCompleteArn(
+      this,
+      "DbSecret",
+      props.dbSecretArn
+    );
     dbSecret.grantRead(taskRole);
 
     const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
@@ -106,7 +109,12 @@ export class AppStack extends cdk.Stack {
       description: "Security group for ECS Fargate service",
     });
 
-    props.dbSecurityGroup.addIngressRule(
+    const dbSecurityGroup = ec2.SecurityGroup.fromSecurityGroupId(
+      this,
+      "ImportedDbSg",
+      props.dbSecurityGroupId
+    );
+    dbSecurityGroup.addIngressRule(
       serviceSecurityGroup,
       ec2.Port.tcp(5432),
       "Allow access from ECS tasks"

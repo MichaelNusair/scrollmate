@@ -10,6 +10,8 @@ interface DatabaseStackProps extends cdk.StackProps {
 export class DatabaseStack extends cdk.Stack {
   public readonly cluster: rds.DatabaseCluster;
   public readonly dbSecurityGroup: ec2.SecurityGroup;
+  public readonly dbSecretArn: string;
+  public readonly dbSecurityGroupId: string;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -37,6 +39,9 @@ export class DatabaseStack extends cdk.Stack {
       storageEncrypted: true,
       removalPolicy: cdk.RemovalPolicy.SNAPSHOT,
     });
+
+    this.dbSecretArn = this.cluster.secret!.secretArn;
+    this.dbSecurityGroupId = this.dbSecurityGroup.securityGroupId;
 
     new cdk.CfnOutput(this, "DbSecretArn", {
       value: this.cluster.secret!.secretArn,

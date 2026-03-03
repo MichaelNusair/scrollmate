@@ -24,7 +24,7 @@ const databaseStack = new DatabaseStack(app, "ScrollMateDatabase", {
 new AppStack(app, "ScrollMateApp", {
   env,
   vpc: vpcStack.vpc,
-  dbCluster: databaseStack.cluster,
-  dbSecurityGroup: databaseStack.dbSecurityGroup,
+  dbSecretArn: databaseStack.dbSecretArn,
+  dbSecurityGroupId: databaseStack.dbSecurityGroupId,
   appSecretsArn: secretsStack.appSecrets.secretArn,
 });
