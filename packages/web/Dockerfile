@@ -18,7 +18,7 @@ COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_module
 COPY --from=deps /app/packages/web/node_modules ./packages/web/node_modules
 
 RUN pnpm --filter @scrollmate/shared build
-RUN pnpm --filter @scrollmate/web exec prisma generate --schema=packages/web/prisma/schema.prisma
+RUN pnpm --filter @scrollmate/web exec prisma generate --schema=prisma/schema.prisma
 RUN pnpm --filter @scrollmate/web build
 
 FROM base AS runner
