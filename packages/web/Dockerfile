@@ -10,7 +10,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 FROM base AS builder
 WORKDIR /app
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json ./
 COPY packages/shared/ ./packages/shared/
 COPY packages/web/ ./packages/web/
 COPY --from=deps /app/node_modules ./node_modules
