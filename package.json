@@ -2,6 +2,7 @@
   "name": "scrollmate",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "build": "pnpm nx run-many --target=build",
     "lint": "pnpm nx run-many --target=lint",
