@@ -6,7 +6,7 @@ WORKDIR /app
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY packages/shared/package.json ./packages/shared/package.json
 COPY packages/web/package.json ./packages/web/package.json
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 FROM base AS builder
 WORKDIR /app
@@ -18,7 +18,7 @@ COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_module
 COPY --from=deps /app/packages/web/node_modules ./packages/web/node_modules
 
 RUN pnpm --filter @scrollmate/shared build
-RUN pnpm --filter @scrollmate/web exec prisma generate
+RUN pnpm --filter @scrollmate/web exec prisma generate --schema=packages/web/prisma/schema.prisma
 RUN pnpm --filter @scrollmate/web build
 
 FROM base AS runner
