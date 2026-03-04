@@ -67,6 +67,10 @@ export class AppStack extends cdk.Stack {
       taskRole,
     });
 
+    this.repository.grant(taskDefinition.executionRole!, "ecr:BatchGetImage", "ecr:GetDownloadUrlForLayer");
+    appSecrets.grantRead(taskDefinition.executionRole!);
+    dbSecret.grantRead(taskDefinition.executionRole!);
+
     const logGroup = new logs.LogGroup(this, "WebLogs", {
       logGroupName: "/ecs/scrollmate-web",
       retention: logs.RetentionDays.TWO_WEEKS,
@@ -131,7 +135,7 @@ export class AppStack extends cdk.Stack {
       assignPublicIp: false,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
       securityGroups: [serviceSecurityGroup],
-      circuitBreaker: { enable: true, rollback: true },
+      circuitBreaker: { enable: true, rollback: false },
     });
 
     const alb = new elbv2.ApplicationLoadBalancer(this, "Alb", {
