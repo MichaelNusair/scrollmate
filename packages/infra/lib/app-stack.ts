@@ -67,10 +67,6 @@ export class AppStack extends cdk.Stack {
       taskRole,
     });
 
-    this.repository.grant(taskDefinition.executionRole!, "ecr:BatchGetImage", "ecr:GetDownloadUrlForLayer");
-    appSecrets.grantRead(taskDefinition.executionRole!);
-    dbSecret.grantRead(taskDefinition.executionRole!);
-
     const logGroup = new logs.LogGroup(this, "WebLogs", {
       logGroupName: "/ecs/scrollmate-web",
       retention: logs.RetentionDays.TWO_WEEKS,
@@ -111,6 +107,10 @@ export class AppStack extends cdk.Stack {
     });
 
     container.addPortMappings({ containerPort: 3000 });
+
+    this.repository.grantPull(taskDefinition.executionRole!);
+    appSecrets.grantRead(taskDefinition.executionRole!);
+    dbSecret.grantRead(taskDefinition.executionRole!);
 
     const serviceSecurityGroup = new ec2.SecurityGroup(this, "ServiceSg", {
       vpc: props.vpc,
