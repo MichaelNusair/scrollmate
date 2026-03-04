@@ -84,7 +84,11 @@ export class AppStack extends cdk.Stack {
         PORT: "3000",
       },
       secrets: {
-        DATABASE_URL: ecs.Secret.fromSecretsManager(dbSecret, "connectionString"),
+        DB_HOST: ecs.Secret.fromSecretsManager(dbSecret, "host"),
+        DB_PORT: ecs.Secret.fromSecretsManager(dbSecret, "port"),
+        DB_USERNAME: ecs.Secret.fromSecretsManager(dbSecret, "username"),
+        DB_PASSWORD: ecs.Secret.fromSecretsManager(dbSecret, "password"),
+        DB_NAME: ecs.Secret.fromSecretsManager(dbSecret, "dbname"),
         AZURE_OPENAI_ENDPOINT: ecs.Secret.fromSecretsManager(appSecrets, "AZURE_OPENAI_ENDPOINT"),
         AZURE_OPENAI_API_KEY: ecs.Secret.fromSecretsManager(appSecrets, "AZURE_OPENAI_API_KEY"),
         AZURE_OPENAI_DEPLOYMENT: ecs.Secret.fromSecretsManager(appSecrets, "AZURE_OPENAI_DEPLOYMENT"),
