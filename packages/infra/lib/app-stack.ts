@@ -16,17 +16,17 @@ interface AppStackProps extends cdk.StackProps {
 }
 
 export class AppStack extends cdk.Stack {
-  public readonly repository: ecr.Repository;
+  public readonly repository: ecr.IRepository;
   public readonly service: ecs.FargateService;
 
   constructor(scope: Construct, id: string, props: AppStackProps) {
     super(scope, id, props);
 
-    this.repository = new ecr.Repository(this, "WebRepo", {
-      repositoryName: "scrollmate-web",
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-      lifecycleRules: [{ maxImageCount: 10 }],
-    });
+    this.repository = ecr.Repository.fromRepositoryName(
+      this,
+      "WebRepo",
+      "scrollmate-web"
+    );
 
     const cluster = new ecs.Cluster(this, "Cluster", {
       vpc: props.vpc,
